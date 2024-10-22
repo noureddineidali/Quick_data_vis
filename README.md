@@ -1,4 +1,6 @@
-# "Quick data vis" 
+# "Quick data vis"
+[![DOI](https://zenodo.org/badge/876821586.svg)](https://doi.org/10.5281/zenodo.13973004)
+
 This is a 8-part quick course in data visualization using R. 
 
 **Graphical Abstract** 
