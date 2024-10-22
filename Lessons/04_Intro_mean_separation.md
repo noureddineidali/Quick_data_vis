@@ -64,7 +64,7 @@ groups_long %>%
 ggsave("../Results/04_bar.png", height = 2.5, width = 2)
 ```
 
-![bar plot](https://github.com/cxli233/Online_R_learning/blob/master/Quick_data_vis/Results/04_bar.png)
+![bar plot](https://github.com/cxli233/Quick_data_vis/blob/main/Results/04_bar.png)
 
 `stat = "summary", fun = mean` inside `geom_bar()` calculates the mean for each group,
 such that the bar lengths are the mean, not the individual observations. 
@@ -87,7 +87,7 @@ groups_long %>%
 ggsave("../Results/04_box.png", height = 2.5, width = 2)
 ```
 
-![box plot](https://github.com/cxli233/Online_R_learning/blob/master/Quick_data_vis/Results/04_box.png)
+![box plot](https://github.com/cxli233/Quick_data_vis/blob/main/Results/04_box.png)
 
 Now I've made a box plot. 
 In a box plot, the center line is median. 
@@ -112,7 +112,7 @@ groups_long %>%
 ggsave("../Results/04_dots.png", height = 2.5, width = 2)
 ```
 
-![dot plot](https://github.com/cxli233/Online_R_learning/blob/master/Quick_data_vis/Results/04_dots.png)
+![dot plot](https://github.com/cxli233/Quick_data_vis/blob/main/Results/04_dots.png)
 
 The offset dots layer is provided by `geom_quasirandom()` of the `ggbeeswarm` package.
 The name comes from the spread of dots looks like a swarm of bees.
@@ -158,7 +158,7 @@ groups_long %>%
 ggsave("../Results/04_dots_violin.png", height = 2.5, width = 2)
 ```
 
-![dot and violin plot](https://github.com/cxli233/Online_R_learning/blob/master/Quick_data_vis/Results/04_dots_violin.png)
+![dot and violin plot](https://github.com/cxli233/Quick_data_vis/blob/main/Results/04_dots_violin.png)
 
 In this case, I overlaid both violin plot and box plot onto the dots. 
 The width of the violin plot shows the distribution, 
@@ -218,7 +218,7 @@ tissue_culture %>%
 
 ggsave("../Results/04_multi_bar.png", height = 3, width = 6)
 ```
-![very bad bar plot](https://github.com/cxli233/Online_R_learning/blob/master/Quick_data_vis/Results/04_multi_bar.png)
+![very bad bar plot](https://github.com/cxli233/Quick_data_vis/blob/main/Results/04_multi_bar.png)
 
 I have cultivar on x axis, buds/shoots on y axis, 
 and color bars by the combination of explant and treatment. 
@@ -245,7 +245,7 @@ tissue_culture %>%
 ggsave("../Results/04_multi_dots.png", height = 6, width = 9)
 ```
 
-![much better](https://github.com/cxli233/Online_R_learning/blob/master/Quick_data_vis/Results/04_multi_dots.png) 
+![much better](https://github.com/cxli233/Quick_data_vis/blob/main/Results/04_multi_dots.png) 
 
 Now this is a lot better. 
 Since the authors want to find the best conditions for each cultivar, we make each cultivar a subplot. 
