@@ -167,11 +167,11 @@ A2
 A3
 ```
 
-![A1](https://github.com/cxli233/Online_R_learning/blob/master/Quick_data_vis/Results/08_A1.png)
+![A1](https://github.com/cxli233/Quick_data_vis/blob/main/Results/08_A1.png)
 
-![A2](https://github.com/cxli233/Online_R_learning/blob/master/Quick_data_vis/Results/08_A2.png)
+![A2](https://github.com/cxli233/Quick_data_vis/blob/main/Results/08_A_2.png)
 
-![A3](https://github.com/cxli233/Online_R_learning/blob/master/Quick_data_vis/Results/08_A3.png)
+![A3](https://github.com/cxli233/Quick_data_vis/blob/main/Results/08_A3.png)
 
 ### The design of the composite 
 To create a composite, we use the `wrap_plots()` function from `patchwork`. 
@@ -202,7 +202,7 @@ wrap_plots(A1, A2, A3,
 ggsave("../Results/08_A_1.png", height = 6, width = 6)
 ```
 
-![A_1](https://github.com/cxli233/Online_R_learning/blob/master/Quick_data_vis/Results/08_A_1.png)
+![A_1](https://github.com/cxli233/Quick_data_vis/blob/main/Results/08_A_1.png)
 
 The way `wrap_plots()` matches sub-panel names to parts A, B, and C is by the order. 
 In this case, the first sub-panel name (A1) provided is part A, and so on. 
@@ -224,7 +224,7 @@ wrap_plots(A1, A2, A3,
 ggsave("../Results/08_A_2.png", height = 6, width = 6)
 ```
 
-![A_2](https://github.com/cxli233/Online_R_learning/blob/master/Quick_data_vis/Results/08_A_2.png)
+![A_2](https://github.com/cxli233/Quick_data_vis/blob/main/Results/08_A_2.png)
 
 For example, vector `c(0.3, 1)` passed on to the `widths` option specifies that the 1st column should be 0.3 of the width of the 2nd column.  
 Notice we only 2 rows and columns, so the heights and widths vectors each have 2 numbers. 
@@ -252,7 +252,7 @@ Panel_A
 ggsave("../Results/08_A.png", height = 6, width = 6)
 ```
 
-![A](https://github.com/cxli233/Online_R_learning/blob/master/Quick_data_vis/Results/08_A.png)
+![A](https://github.com/cxli233/Quick_data_vis/blob/main/Results/08_A.png)
 
 Now we have panel A! 
 
@@ -267,9 +267,9 @@ Panel_B
 Panel_C
 ```
 
-![B](https://github.com/cxli233/Online_R_learning/blob/master/Quick_data_vis/Results/08_B.png)
+![B](https://github.com/cxli233/Quick_data_vis/blob/main/Results/08_B.png)
 
-![C](https://github.com/cxli233/Online_R_learning/blob/master/Quick_data_vis/Results/08_C.png)
+![C](https://github.com/cxli233/Quick_data_vis/blob/main/Results/08_C.png)
 
 Let's say we want panel A and panel B to be in the left column, panel C alone take up the entire right column, what should the design argument be? 
 ```{r}
@@ -295,7 +295,7 @@ Again, we can control that by calling `widths = ` and `heights = ` within `wrap_
 ggsave("../Results/08_assembled.png", height = 7, width = 8)
 ```
 
-![assembled](https://github.com/cxli233/Online_R_learning/blob/master/Quick_data_vis/Results/08_assembled.png)
+![assembled](https://github.com/cxli233/Quick_data_vis/blob/main/Results/08_assembled.png)
 
 Now we are really close. 
 Notice that only panel A is labeled? 
@@ -317,7 +317,7 @@ We just need to append `+ labs(tag = "B")` and `+ labs(tag = "C")` to the respec
 ggsave("../Results/08_assembled_label.png", height = 7, width = 8)
 ```
 
-![assembled_labeled](https://github.com/cxli233/Online_R_learning/blob/master/Quick_data_vis/Results/08_assembled_label.png)
+![assembled_labeled](https://github.com/cxli233/Quick_data_vis/blob/main/Results/08_assembled_label.png)
 
 Done! 
 Great, we have a publication ready figure! 
