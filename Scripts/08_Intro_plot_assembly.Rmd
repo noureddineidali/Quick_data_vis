@@ -312,3 +312,24 @@ Great, we have a publication ready figure!
 Use your own data from your research to generate a composite figure. 
 Save it using `ggsave()`. 
 
+For those of you who do not have your own data, please use these datasets from a hypothetical project.  
+
+You measured tensile strength and resistance of a material at two temperatures (t1 and t2) and two pressures (p1 and p2) (dataset1). 
+You also tested samples of this material in the above-mentioned temperature-pressure combinations. You recorded the percentages of samples that passed, failed, or were unclear (dataset2). 
+
+* What is the condition that resulted in the highest tensile strength? 
+* What is the condition that resulted in the lowest resistance? 
+* Is there any correlation between tensile strength and resistance across various conditions? 
+* What is the condition that resulted in the lowest percentage of failure? What is the breakdown of test outcomes across treatment? 
+* Based on all the data available, which treatment is the best? 
+
+## Datasets 
+```{r}
+dataset1 <- read.csv("../Data/dataset1.csv")
+dataset2 <- read.csv("../Data/dataset2.csv")
+
+head(dataset1)
+head(dataset2)
+```
+
+
