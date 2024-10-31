@@ -1,0 +1,83 @@
+---
+title: "Intro_to_data_vis ANSWER KEY"
+author: "Chenxin Li"
+date: "2023-01-06"
+output:
+  html_notebook:
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Required packages
+```{r}
+library(tidyverse)
+library(RColorBrewer)
+```
+
+# Data from lecture  
+```{r}
+child_mortality <- read_csv("../Data/child_mortality_0_5_year_olds_dying_per_1000_born.csv", col_types = cols()) 
+babies_per_woman <- read_csv("../Data/children_per_woman_total_fertility.csv", col_types = cols()) 
+income <- read_csv("../Data/income_per_person_gdppercapita_ppp_inflation_adjusted.csv", col_types = cols()) 
+```
+
+Re-shape data into tidy format. 
+```{r}
+babies_per_woman_tidy <- babies_per_woman %>% 
+  pivot_longer(names_to = "year", values_to = "birth", cols = c(2:302))  
+
+child_mortality_tidy <- child_mortality %>% 
+  pivot_longer(names_to = "year", values_to = "death_per_1000_born", cols = c(2:302))  
+
+income_tidy <- income %>% 
+  pivot_longer(names_to = "year", values_to = "income", cols = c(2:242))  
+```
+
+Join them together. 
+```{r}
+example2_data <- babies_per_woman_tidy %>% 
+  inner_join(child_mortality_tidy, by = c("country", "year")) %>% 
+  inner_join(income_tidy, by = c("country", "year"))
+
+head(example2_data)
+```
+
+# Exercise 
+Graph income (in log10 scale) on x axis, child mortality on y axis, and color with children/woman in year 2010. 
+Were the trend similar to year 1945? 
+Save the graph using `ggsave()`. 
+
+ 
+```{r}
+example2_data %>% 
+  filter(year == 2010) %>% 
+  ggplot(aes(x = log10(income), y = death_per_1000_born)) +
+  geom_point(aes(color = birth)) +
+  scale_color_gradientn(colours = brewer.pal(9, "YlGnBu")) + 
+  labs(x = "log10 income",
+       y = "death per 1000 born",
+       title = "2010") +
+  theme_classic()
+
+ggsave("Lesson3_answer1.png", width = 3, height = 3)
+```
+```{r}
+example2_data %>% 
+  filter(year == 1945) %>% 
+  ggplot(aes(x = log10(income), y = death_per_1000_born)) +
+  geom_point(aes(color = birth)) +
+  scale_color_gradientn(colours = brewer.pal(9, "YlGnBu")) + 
+  labs(x = "log10 income",
+       y = "death per 1000 born",
+       title = "1945") +
+  theme_classic()
+
+ggsave("Lesson3_answer2.png", width = 3, height = 3)
+```
+

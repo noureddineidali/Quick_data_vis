@@ -1,0 +1,113 @@
+---
+title: "08_Plot_assembly_ANSWER_KEY"
+author: "Chenxin Li"
+date: "2023-07-09"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+ 
+```{r}
+library(tidyverse)
+library(ggbeeswarm)
+library(patchwork)
+
+library(RColorBrewer)
+```
+
+# Exercise
+Use your own data from your research to generate a composite figure. 
+Save it using `ggsave()`. 
+
+For those of you who do not have your own data, please use these datasets from a hypothetical project.  
+
+You measured tensile strength and resistance of a material at two temperatures (t1 and t2) and two pressures (p1 and p2) (dataset1). 
+You also tested samples of this material in the above-mentioned temperature-pressure combinations. You recorded the percentages of samples that passed, failed, or were unclear (dataset2). 
+
+* What is the condition that resulted in the highest tensile strength? 
+* What is the condition that resulted in the lowest resistance? 
+* Is there any correlation between tensile strength and resistance across various conditions? 
+* What is the condition that resulted in the lowest percentage of failure? What is the breakdown of test outcomes across treatment? 
+* Based on all the data available, which treatment is the best? 
+
+## Datasets 
+```{r}
+dataset1 <- read.csv("../Data/dataset1.csv")
+dataset2 <- read.csv("../Data/dataset2.csv")
+
+head(dataset1)
+head(dataset2)
+```
+### Panel A 
+```{r}
+panel_A <- dataset1 %>% 
+  ggplot(aes(x = temperature, y = tensile_strength)) +
+  facet_grid(.~ pressure) +
+  ggbeeswarm::geom_quasirandom(alpha = 0.8, aes(color = treatment)) +
+  scale_color_manual(values = brewer.pal(8, "Set2")) +
+  labs(x = "Temperature",
+       y = "Tensile strength") +
+  theme_classic()
+
+panel_A
+```
+### Panel B 
+```{r}
+panel_B <- dataset1 %>% 
+  ggplot(aes(x = temperature, y = resistance)) +
+  facet_grid(.~ pressure) +
+  ggbeeswarm::geom_quasirandom(alpha = 0.8, aes(color = treatment)) +
+  scale_color_manual(values = brewer.pal(8, "Set2")) +
+  labs(x = "Temperature",
+       y = "Resistance") +
+  theme_classic()
+
+panel_B
+```
+### Panel C
+```{r}
+panel_C <- dataset1 %>% 
+  ggplot(aes(x = resistance, y = tensile_strength)) +
+  facet_wrap(~ treatment) +
+  geom_point(aes(color = treatment)) +
+  labs(x = "Resistance",
+       y = "Tesnsile strength") +
+  scale_color_manual(values = brewer.pal(8, "Set2")) +
+  theme_classic()
+
+panel_C
+```
+
+### Panel D
+```{r}
+panel_D <- dataset2 %>% 
+  pivot_longer(names_to = "treatment", values_to = "percent_samples", cols = !outcome) %>% 
+  ggplot(aes(x = treatment, y = percent_samples)) +
+  geom_bar(stat = "identity", position = "stack", aes(fill = outcome)) +
+  scale_fill_manual(values = c("grey20", "tomato1", "dodgerblue4")) +
+  labs(y = "Percent samples",
+       x = "Treatment") + 
+  theme_classic()
+
+panel_D
+```
+
+### Assemble them
+```{r}
+ wrap_plots(
+  panel_A + labs(tag = "A") + theme(legend.position = "none"),
+  panel_B + labs(tag = "B") + theme(legend.position = "none"),
+  panel_C + labs(tag = "C"),
+  panel_D + labs(tag = "D"),
+  guides = "collect",
+  design = "AB
+            CD")
+
+ggsave("Lesson8_answer1.svg", height = 6, width = 8)
+ggsave("Lesson8_answer1.png", height = 6, width = 8)
+```
+
+Based on all the data available, t2p2 appeared to the best performer out of all metrics studied. 

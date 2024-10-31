@@ -1,0 +1,57 @@
+---
+title: "05_Intro_proportions_ANSWER_KEY"
+author: "Chenxin Li"
+date: "2023-01-14"
+output: html_notebook 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Packages 
+```{r}
+library(tidyverse)
+library(readxl)
+library(RColorBrewer)
+```
+ 
+
+# Exercise 
+As an exercise, let's visualize this example. 
+We have two groups, each contains 4 categories. 
+```{r}
+group1 <- data.frame(
+  "Type" = c("Type I", "Type II", "Type III", "Type IV"),
+  "Percentage" = c(15, 35, 30, 20)
+)
+group2 <- data.frame(
+  "Type" = c("Type I", "Type II", "Type III", "Type IV"),
+  "Percentage" = c(10, 25, 35, 30)
+)
+```
+
+```{r}
+group1_and_group2 <- rbind(
+  group1 %>% 
+    mutate(group = "group1"), 
+  group2 %>% 
+    mutate(group = "group2")
+)
+
+head(group1_and_group2)
+```
+
+```{r}
+group1_and_group2 %>% 
+  ggplot(aes(x = group, y = Percentage, fill = Type)) +  
+  geom_bar(stat = "identity", width = 0.5) +
+  scale_fill_manual(values = brewer.pal(8, "Accent"))+
+  theme_classic()
+
+ggsave("Lesson5_answer1.png", width = 3, height = 3)
+```
+
+Use `ggsave` to save your visualization. 
+
+Hint: look in this lesson to see what I did to combine two entities into one data frame while giving each a unique identifier. 

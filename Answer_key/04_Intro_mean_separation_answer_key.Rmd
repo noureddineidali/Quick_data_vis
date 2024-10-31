@@ -1,0 +1,171 @@
+---
+title: "mean_separation_ANSWER_KEY"
+author: "Chenxin Li"
+date: "2023-01-07"
+output:
+  html_notebook:
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Packages 
+```{r}
+library(tidyverse)
+library(readxl)
+library(RColorBrewer)
+library(ggbeeswarm)
+```
+
+
+# Data from lecture
+```{r}
+tissue_culture <- read_excel("../Data/LU-Matand - Stem Data.xlsx")
+head(tissue_culture)
+```
+
+```{r}
+tissue_culture %>% 
+  mutate(Treatment = factor(Treatment, 
+                            levels = c("T1", "T5", "T10"))) %>% 
+  ggplot(aes(x = Treatment, y = Buds_Shoots)) +
+  facet_wrap(~ Variety, scales = "free") +
+  geom_quasirandom(aes(color = Explant), alpha = 0.8) +
+  scale_colour_manual(values = brewer.pal(8, "Set2")) +
+  labs(x = "Hormone Treatment",
+       y = "Num buds and shoots",
+       fill = NULL) +
+  theme_classic() +
+  theme(legend.position = "bottom") 
+
+ggsave("../Results/04_multi_dots.png", height = 6, width = 9)
+```
+ 
+
+# Exercise
+## Q1
+Notice the `scales = "free` inside `facet_wrap()`. 
+Make a new graph but remove the `scales = "free` inside `facet_wrap()`.
+
+
+```{r}
+tissue_culture %>% 
+  mutate(Treatment = factor(Treatment, 
+                            levels = c("T1", "T5", "T10"))) %>% 
+  ggplot(aes(x = Treatment, y = Buds_Shoots)) +
+  facet_wrap(~ Variety) +
+  geom_quasirandom(aes(color = Explant), alpha = 0.8) +
+  scale_colour_manual(values = brewer.pal(8, "Set2")) +
+  labs(x = "Hormone Treatment",
+       y = "Num buds and shoots",
+       fill = NULL) +
+  theme_classic() +
+  theme(legend.position = "bottom") 
+
+ggsave("Lesson4_answer1.png", height = 6, width = 9)
+```
+
+Can you explain what happened? 
+Now all the varieties have the same y axis. 
+
+Can you explain in what scenario is more appropriate to have `scales = "free"` turned on vs off? 
+When we are only comparing within subplots, it's better to use `scales = "free"`. 
+When we are comparing across subplots, it's better to not use `scales = "free"`.
+
+## Q2 
+Here is an example data for you to practice: 
+```{r}
+M1 <- data.frame(
+  conc = rnorm(n = 8, mean = 0.03, sd = 0.01)
+) %>% 
+  mutate(group = "ctrl") %>% 
+  rbind(
+    data.frame(
+      conc = rnorm(n = 6, mean = 0.25, sd = 0.02)
+    ) %>% 
+      mutate(group = "trt")
+  ) %>% 
+  mutate(pest = "Pest 1")
+
+M2 <- data.frame(
+  conc = rnorm(n = 8, mean = 6, sd = 1)
+) %>% 
+  mutate(group = "ctrl") %>% 
+  rbind(
+    data.frame(
+      conc = rnorm(n = 6, mean = 5.5, sd = 1.1)
+    ) %>% 
+      mutate(group = "trt")
+  ) %>% 
+  mutate(pest = "Pest 2")
+
+M3 <- data.frame(
+  conc = rnorm(n = 8, mean = 20, sd = 0.5)
+) %>% 
+  mutate(group = "ctrl") %>% 
+  rbind(
+    data.frame(
+      conc = rnorm(n = 6, mean = 19.5, sd = 1.2)
+    ) %>% 
+      mutate(group = "trt")
+  ) %>% 
+  mutate(pest = "Pest 3")
+
+Spray <- rbind(
+  M1, M2, M3
+)
+
+head(Spray)
+```
+
+In this hypothetical experiment, I have two treatments: ctrl vs. trt. 
+And I measured the occurrence of three different pests after spraying either treatments. 
+Make a mean separation plot for this experiment. 
+
+Hints: 
+
+* Is this a multifactorial experiment? Yes! 
+* How many observations are there in each group? 
+
+```{r}
+Spray %>% 
+  group_by(group, pest) %>% 
+  count()
+```
+Ctrl groups has 8 observations, while trt group have 6 observations.  
+
+Was the treatment effective in controlling any of the three pests? 
+```{r}
+Spray %>% 
+  ggplot(aes(x = group, y = conc)) +
+  facet_wrap(~ pest, scales = "free") +
+  geom_quasirandom(aes(color = group), alpha = 0.8) +
+  scale_colour_manual(values = brewer.pal(8, "Set2")) +
+  labs(x = "Treatment",
+       y = "concentration",
+       fill = NULL) +
+  theme_classic() +
+  theme(legend.position = "bottom") 
+
+ggsave("Lesson4_answer2.png", width = 4, height = 3)
+```
+
+Save the graph using `ggsave()`. 
+
+ 
+
+
+
+
+
+
+
+
+
+
+

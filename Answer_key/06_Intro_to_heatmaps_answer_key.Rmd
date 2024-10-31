@@ -1,0 +1,81 @@
+---
+title: "Intro_to_heatmap_ANSWER_KEY"
+author: "Chenxin Li"
+date: "2023-01-15"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+ 
+# Packages 
+```{r}
+library(tidyverse)
+library(RColorBrewer)
+library(viridis) 
+```
+
+# Data from lecture 
+```{r}
+abc_1 <- expand.grid(
+  a = c(1:10),
+  b = c(1:10)
+) %>% 
+  mutate(c = a + b)
+
+head(abc_1)
+```
+
+# Exercise 
+## Q1
+Here is the rainbow color scale: 
+```{r}
+abc_1 %>% 
+  ggplot(aes(x = a, y = b)) +
+  geom_tile(aes(fill = c)) +
+  scale_fill_gradientn(colors = rainbow(20)) +
+  labs(title = "c = a + b") +
+  theme_classic() +
+  coord_fixed()
+
+ggsave("../Results/06_abc_2.png", height = 3, width = 3)
+```
+Can you explain why the rainbow color scale is inappropriate for heatmaps?  
+
+There are multiple issues with the rainbow color scale.
+1. It is not red/green colorblind friendly.
+2. It is neither a unidirectional or bidirectional color scale. 
+
+## Q2
+You can ignore the following chunk. It generates the data. 
+```{r}
+Q2_data <- rbind(
+  c(10, 20, 30, 40, 50, 60), # 6
+  c(0, 10, 30, 10, 5, 0), # 3
+  c(100, 200, 300, 400, 500, 550), # 6
+  c(50, 45, 40, 30, 20, 0),  # 1
+  c(0, 200, 300, 500, 200, 100), # 4
+  c(10, 500, 200, 100, 10, 0), # 2 
+  c(0, 0, 0, 10, 500, 0) # 5
+) %>%
+  as.data.frame() %>% 
+  cbind(gene = c("a", "b", "c", "d", "e", "f", "g")) %>% 
+  pivot_longer(cols = !gene, names_to = "V", values_to = "expression") %>% 
+  mutate(stage = str_remove(V, "V"))
+
+Q2_data %>% 
+  ggplot(aes(x = stage, y = gene)) +
+  geom_tile(aes(fill = expression)) +
+  geom_text(aes(label = expression)) +
+  scale_fill_gradientn(colors = rev(brewer.pal(11, "RdBu")))+
+  theme_classic()
+
+ggsave("../Results/06_genes_3.png", height = 3.5, width = 4.2)
+```
+What is (are) wrong with this heatmap? 
+Hint: there is a lot going wrong with this heatmap. 
+
+1. Values are not scaled to z-score. 
+2. Bidirectional color scale used for unidirectional data.
+3. Potential issue with outlier(s).  
